@@ -1,0 +1,6 @@
+# cmake
+build
+bin
+
+# poetry
+poetry.lock

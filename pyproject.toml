@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "opencv"
+version = "0.1.0"
+description = ""
+authors = ["Arisa Kubota <kubotaarisa@team-lab.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9,<3.11"
+numpy = "^1.21.5"
+opencv-python = "^4.5.5"
+matplotlib = "^3.5.1"
+scikit-image = "^0.19.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
