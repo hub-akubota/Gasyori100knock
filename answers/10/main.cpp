@@ -29,7 +29,7 @@ void filter_median(const cv::Mat &src, cv::Mat &dst, cv::Size ksize=cv::Size(3, 
                 }
             }
         }
-        int median = ksize.width * ksize.height / 2 + 1;
+        int median = ksize.width * ksize.height / 2;
         for (int ch=0; ch<3; ch++) {
             std::sort(value[ch].begin(), value[ch].end());
             pixel[ch] = value[ch][median];
