@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <cmath>
 
-void filter_sobel(const cv::Mat &src, cv::Mat &dst, cv::Size ksize=cv::Size(3, 3), char mode='x') {
+void filter_emboss(const cv::Mat &src, cv::Mat &dst) {
     dst = src.clone();
     dst.convertTo(dst, CV_32F);
     cv::Mat tmp = dst.clone();
@@ -14,36 +14,14 @@ void filter_sobel(const cv::Mat &src, cv::Mat &dst, cv::Size ksize=cv::Size(3, 3
     int h = src.size().height;
 
     // prepare kernel
-    cv::Mat k = cv::Mat::zeros(ksize, CV_32F);
-    if (mode=='x') {
-        for (int y=0; y<ksize.height; y++) {
-            if (y==(int)(ksize.height/2)) {
-                k.at<float>(y, 0) = 2;
-                k.at<float>(y, ksize.width-1) = -2;
-            } else {
-                k.at<float>(y, 0) = 1;
-                k.at<float>(y, ksize.width-1) = -1;
-            }
-        }
-    }
-    if (mode=='y') {
-        for (int x=0; x<ksize.width; x++) {
-            if (x==(int)(ksize.width/2)) {
-                k.at<float>(0, x) = 2;
-                k.at<float>(ksize.height-1, x) = -2;
-            } else {
-                k.at<float>(0, x) = 1;
-                k.at<float>(ksize.height-1, x) = -1;
-            }
-        }
-    }
+    cv::Mat k = (cv::Mat_<float>(3, 3) << -2, -1, 0, -1, 1, 1, 0, 1, 2);
 
     dst.forEach<float>([&](float &pixel, const int pos[]) -> void {
         int x = pos[1];
         int y = pos[0];
         float value = 0;
-        for (int step_x=0; step_x<ksize.width; step_x++) {
-            for (int step_y=0; step_y<ksize.height; step_y++) {
+        for (int step_x=0; step_x<3; step_x++) {
+            for (int step_y=0; step_y<3; step_y++) {
                 int col = x + step_x - 1;
                 int row = y + step_y - 1;
                 if (col < 0) col = 0;
@@ -70,7 +48,7 @@ int main() {
     if (img_orig.channels() == 3) {
         cv::cvtColor(img_orig, img_orig, cv::COLOR_BGR2GRAY);
     }
-    filter_sobel(img_orig, img_result, cv::Size(3, 3), 'x');
+    filter_emboss(img_orig, img_result);
     cv::imshow("cpp_origin", img_orig);
     cv::imshow("cpp_result", img_result);
     cv::moveWindow("cpp_result", img_orig.size().width, 0);

@@ -8,5 +8,5 @@ cd build
 cmake .. . -DQ:STRING=$1
 make
 cd ../
-poetry run python answers/$1/main.py
+poetry run python answers/$1/main.py &
 ./bin/cmd
